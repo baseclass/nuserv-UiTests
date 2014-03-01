@@ -110,14 +110,6 @@
         [When(@"I press Save")]
         public void WhenIPressSave()
         {
-            var newRepository = this.GetNewRepository();
-
-            var saveButton = newRepository.FindElements(By.Id("saveNewRepository")).FirstOrDefault();
-
-            Assert.IsNotNull(saveButton, "Can't find save button!");
-
-            ((IJavaScriptExecutor)Browser.Current).ExecuteScript("arguments[0].scrollIntoView(true);", saveButton);
-
             var MAX_STALE_ELEMENT_RETRIES = 10;
             var retries = 0;
 
@@ -125,8 +117,16 @@
             {
                 try
                 {
-                    Thread.Sleep(500);
+                    var newRepository = this.GetNewRepository();
 
+                    var saveButton = newRepository.FindElements(By.Id("saveNewRepository")).FirstOrDefault();
+
+                    Assert.IsNotNull(saveButton, "Can't find save button!");
+
+                    ((IJavaScriptExecutor)Browser.Current).ExecuteScript("arguments[0].scrollIntoView(true);", saveButton);
+
+                    Thread.Sleep(500);
+                    
                     saveButton.Click();
 
                     return;
